@@ -49,7 +49,7 @@ if ((playerGuess === computerGuess [0]) && (guessesLeft > 0)) {
 }
 //when player !== computer's guess and guess more than 0, guesses left decreases by 1
 else if ((playerGuess !== computerGuess [0]) && (guessLeft > 0)){
-    guessesLeft--;
+     guessesLeft--;
 }
 // when guesses left is 0
 else {
@@ -68,7 +68,7 @@ else {
 document.querySelector("#win").innerHTML = "Wins: " + wins;
 document.querySelector("#loss").innerHTML = "Loss:" + losses;
 document.querySelector("#guessLeft").innerHTML = "Guesses Left: " + guessesLeft;
-document.querySelector("#guessSoFar").innerHTML = "Your Guesses so far:" + lettersGuessed;
+document.querySelector("#guessSoFar").innerHTML = "Your Guesses so far: " + playerGuess;
 
 } //end document.onkeyup function
 
