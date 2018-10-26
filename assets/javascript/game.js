@@ -1,76 +1,85 @@
-//array of computer's choices
-var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
-//variables of player's wins, losses, and guesses left
+// This array will hold what we guess
+var guessedLetters = [];
+
+// This variable will be randomly assigned one of the letters
+var letterToGuess = null;
+
+// This is what we'll use to count down
+var guessesLeft = 9;
+
+// This is the counter for wins/losses
 var wins = 0;
 var losses = 0;
-var guessesLeft = 9; 
 
-//array variables for player's guesses and computer's guesses
-//array for user to push choices to
-var lettersGuessed = []; 
-var computerGuess = [];
+// Below we created three functions to updateGuesses, updateGuessesLeft, and updateGuessesSoFar
+var updateGuessesLeft = function() {
+  // Here we are grabbing the HTML element and setting it equal to the guessesLeft.
+  // (i.e. guessesLeft will get displayed in HTML)
+  document.querySelector("#guesses-left").innerHTML = guessesLeft;
+};
+
+var updateLetterToGuess = function() {
+  // Here we get a random letterToGuess and assign it based on a random generator (only looking at a, b, or c)
+  letterToGuess = letters[Math.floor(Math.random() * letters.length)];
+};
+
+var updateGuessesSoFar = function() {
+  // Here we take the guesses the user has tried -- then display it as letters separated by commas.
+  document.querySelector("#guesses-so-far").innerHTML = guessedLetters.join(", ");
+};
+
+// Function will be called when we reset everything
+var reset = function() {
+  guessesLeft = 9;
+  guessedLetters = [];
+  updateLetterToGuess();
+  updateGuessesLeft();
+  updateGuessesSoFar();
+};
+
+// Execute on page load.
+updateLetterToGuess();
+updateGuessesLeft();
+
+// This function will capture the keyboard clicks.
+document.onkeydown = function(event) {
+  // It's going to reduce the guesses by one
+  guessesLeft--;
+
+  // Lowercase the letter
+  var letter = String.fromCharCode(event.which).toLowerCase();
+
+  // Then add the guess to the guessedLetters array
+  guessedLetters.push(letter);
+
+  // Then its going to run the update functions
+  updateGuessesLeft();
+  updateGuessesSoFar();
 
 
-//window.onload
-window.onload = function() {
-    //Randomly chooses a choice from computerChoices array. Set to comGuess which is the computer's guess
-    var comGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-    //pushes random comGuess to the computerGuess array
-    computerGuess.push(comGuess);
-    //console.logs the computer's guess (index of 0) from the array
-    console.log(computerGuess[0]);
-}
+  // We'll check if there's a match.
+  if (letter === letterToGuess) {
 
-
-//GAME
-
-//Function runs when user presses a key
-document.onkeyup = function(event) {
-
-    //var playerGuess will equal what key was pressed
-    var playerGuess = event.key;
-    //insert player's guess into lettersGuessed array
-    lettersGuessed.push(playerGuess);
-    console.log(computerGuess[0]);
-
-
-
-//if else statments determines (wins, losses, guesses left)
-// when player = computer's guess and guess more than 0.
-if ((playerGuess === computerGuess [0]) && (guessesLeft > 0)) {
+    // If there is then we win and we'll update the HTML to display the win.
     wins++;
-    guessesLeft = 9;
-    lettersGuessed.length = 0;
-    computerGuess.length = 0;
-    var comGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-    computerGuess.push(comGuess);
-    console.log(computerGuess[0]);
-}
-//when player !== computer's guess and guess more than 0, guesses left decreases by 1
-else if ((playerGuess !== computerGuess [0]) && (guessLeft > 0)){
-     guessesLeft--;
-}
-// when guesses left is 0
-else {
+    document.querySelector("#wins").innerHTML = wins;
+
+    // Then we'll reset the game
+    reset();
+  }
+
+  // If we are out of guesses...
+  if (guessesLeft === 0) {
+
+    // Then we will loss and we'll update the HTML to display the loss.
     losses++;
-    guessesLeft--;
-    lettersGuessed.length = 0;
-    computerGuess.length = 0;
-    var comGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-    computerGuess.push(comGuess);
-    console.log(computerGuess[0]);
+    document.querySelector("#losses").innerHTML = losses;
 
-}
-
-//display wins, losses, guesses left, and guesses so far
-
-document.querySelector("#win").innerHTML = "Wins: " + wins;
-document.querySelector("#loss").innerHTML = "Loss:" + losses;
-document.querySelector("#guessLeft").innerHTML = "Guesses Left: " + guessesLeft;
-document.querySelector("#guessSoFar").innerHTML = "Your Guesses so far: " + playerGuess;
-
-} //end document.onkeyup function
-
+    // Then we'll call the reset.
+    reset();
+  }
+};
 
 
