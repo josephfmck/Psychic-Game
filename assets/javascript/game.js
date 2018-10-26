@@ -21,7 +21,7 @@ var updateGuessesLeft = function() {
 };
 
 var updateLetterToGuess = function() {
-  // Here we get a random letterToGuess and assign it based on a random generator (only looking at a, b, or c)
+  // Here we get a random letterToGuess and assign it based on a random generator
   letterToGuess = letters[Math.floor(Math.random() * letters.length)];
 };
 
